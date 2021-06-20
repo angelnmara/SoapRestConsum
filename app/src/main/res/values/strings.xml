@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">RedPackTest</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_codigo_postal">Código Postal</string>
+    <string name="title_geocode">GeoCode</string>
+    <string name="title_trago">Trago</string>
+
+    <!--errores-->
+    <string name="error_tragos">No se pudo obtener la información en tragos</string>
+    <string name="ninguna_coincidencia_tragos">No se encontro ninguna coincidencia</string>
+
+</resources>

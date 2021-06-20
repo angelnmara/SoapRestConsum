@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_codigo_postal">
+
+    <fragment
+        android:id="@+id/navigation_codigo_postal"
+        android:name="com.example.redpacktest.ui.codigopostal.CodigoPostalFragment"
+        android:label="@string/title_codigo_postal"
+        tools:layout="@layout/fragment_codigo_postal_list" />
+
+    <fragment
+        android:id="@+id/navigation_geocode"
+        android:name="com.example.redpacktest.ui.geocode.GeoCodeFragment"
+        android:label="@string/title_geocode"
+        tools:layout="@layout/fragment_geocode_list" />
+
+    <fragment
+        android:id="@+id/navigation_trago"
+        android:name="com.example.redpacktest.ui.trago.TragoFragment"
+        android:label="@string/title_trago"
+        tools:layout="@layout/fragment_trago_list" />
+</navigation>
