@@ -12,4 +12,8 @@ class RepoImpl(private val dataSource: DataSource): Repo {
     override suspend fun getTrago(tragoName:String):Resource<List<Drink>>{
         return dataSource.getTrago(tragoName)
     }
+
+    override suspend fun getColoniasByCodigo(codigo: Int): Resource<List<String>> {
+        return dataSource.getColoniasByCodigo(codigo)
+    }
 }

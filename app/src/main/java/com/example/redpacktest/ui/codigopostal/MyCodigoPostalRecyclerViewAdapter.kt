@@ -15,7 +15,7 @@ import com.example.redpacktest.ui.codigopostal.placeholder.PlaceholderContent.Pl
  * TODO: Replace the implementation with code for your data type.
  */
 class MyCodigoPostalRecyclerViewAdapter(
-    private val values: List<PlaceholderItem>
+    private val values: List<String>
 ) : RecyclerView.Adapter<MyCodigoPostalRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,8 +32,8 @@ class MyCodigoPostalRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.idView.text = item.id
-        holder.contentView.text = item.content
+        holder.idView.text = item//.id
+        //holder.contentView.text = item.content
     }
 
     override fun getItemCount(): Int = values.size

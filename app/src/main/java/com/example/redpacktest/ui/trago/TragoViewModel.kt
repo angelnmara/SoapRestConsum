@@ -8,8 +8,21 @@ import androidx.lifecycle.viewModelScope
 import com.example.redpacktest.R
 import com.example.redpacktest.api.Repo
 import com.example.redpacktest.tools.Resource
-import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy
+import kotlinx.coroutines.*
+import okhttp3.RequestBody
 
+import okhttp3.MediaType
+import java.io.StringReader
+
+import org.xml.sax.InputSource
+
+import javax.xml.parsers.DocumentBuilder
+
+import javax.xml.parsers.DocumentBuilderFactory
 
 class TragoViewModel(private val repo:Repo):ViewModel() {
 
@@ -23,6 +36,14 @@ class TragoViewModel(private val repo:Repo):ViewModel() {
     }
 
     fun getTragos(tragoName:String){
+        //httpPrueba()
+        /*viewModelScope.launch {
+            val result = repo.getColoniasByCodigo(57000)
+            if(result is Resource.Success){
+                Log.d(TAG, "getTragos: ok")
+            }
+        }*/
+
         viewModelScope.launch {
             val result = repo.getTrago(tragoName)
             if(result is Resource.Success){
@@ -31,7 +52,7 @@ class TragoViewModel(private val repo:Repo):ViewModel() {
                     _tragosResult.value = TragosResult(success = TragosInUserView(result.data))
                 }
                 else{
-                    _tragosResult.value = TragosResult(error = R.string.ninguna_coincidencia_tragos)
+                    _tragosResult.value = TragosResult(error = R.string.ninguna_coincidencia)
                 }
             }else{
                 Log.d(TAG, "getTragos: no se obtuvo información en tragos")

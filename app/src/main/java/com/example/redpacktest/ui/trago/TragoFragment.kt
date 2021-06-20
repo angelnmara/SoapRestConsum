@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.redpacktest.R
@@ -24,6 +25,7 @@ class TragoFragment : Fragment(), androidx.appcompat.widget.SearchView.OnQueryTe
     private val TAG = javaClass.name
     private val viewModel by viewModels<TragoViewModel>{VMFactory(RepoImpl(com.example.redpacktest.data.model.DataSource()))}
     private var columnCount = 1
+    private lateinit var rvProgresBar: RelativeLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,16 +40,18 @@ class TragoFragment : Fragment(), androidx.appcompat.widget.SearchView.OnQueryTe
         viewModel.tragosResult.observe(viewLifecycleOwner, Observer {
                 tragosResult ->
             tragosResult ?: return@Observer
-            /*loadingprogresbar*/
+            rvProgresBar.visibility = View.VISIBLE
             tragosResult.error?.let {
                     error ->
                 Log.d(TAG, "onCreate: " + error)
                 Snackbar.make(rvTragos, getString(error), Snackbar.LENGTH_SHORT).show()
+                rvProgresBar.visibility = View.GONE
             }
             tragosResult.success?.let {
                     success->
                 Log.d(TAG, "onCreate: " + success.listaTragos.toString())
                 rvTragos.adapter = MyTragoRecyclerViewAdapter(success.listaTragos)
+                rvProgresBar.visibility = View.GONE
             }
         })
     }
@@ -58,6 +62,7 @@ class TragoFragment : Fragment(), androidx.appcompat.widget.SearchView.OnQueryTe
     ): View? {
         val view = inflater.inflate(R.layout.fragment_trago_list, container, false)
         val rvTragos = view.findViewById<RecyclerView>(R.id.listTragos)
+        rvProgresBar = view.findViewById(R.id.progress_bar_trago)
         // Set the adapter
         if (rvTragos is RecyclerView) {
             with(rvTragos) {

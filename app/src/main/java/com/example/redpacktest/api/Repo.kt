@@ -7,4 +7,5 @@ import com.example.redpacktest.tools.Resource
 interface Repo {
     suspend fun getGeoCode(): Resource<List<GeoCode>>
     suspend fun getTrago(tragoName:String): Resource<List<Drink>>
+    suspend fun getColoniasByCodigo(codigo:Int): Resource<List<String>>
 }

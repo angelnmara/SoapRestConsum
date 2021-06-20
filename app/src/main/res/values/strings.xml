@@ -9,6 +9,7 @@
 
     <!--errores-->
     <string name="error_tragos">No se pudo obtener la información en tragos</string>
-    <string name="ninguna_coincidencia_tragos">No se encontro ninguna coincidencia</string>
+    <string name="error_codigo_postal">No se pudo obtener la información del codigo postal</string>
+    <string name="ninguna_coincidencia">No se encontro ninguna coincidencia</string>
 
 </resources>

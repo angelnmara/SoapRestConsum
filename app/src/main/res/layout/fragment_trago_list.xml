@@ -9,7 +9,7 @@
     android:layout_marginRight="16dp"
     tools:context=".ui.trago.TragoFragment">
     <RelativeLayout
-        android:id="@+id/progress_bar"
+        android:id="@+id/progress_bar_trago"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
