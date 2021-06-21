@@ -106,7 +106,7 @@ class GeoCodeFragment : Fragment(), View.OnClickListener {
             geoCodeResult.success?.let {
                 success->
                 Log.d(TAG, "configTexboxes: " + success.geoCodeInUserView.data)
-                txvResponse.text = success.geoCodeInUserView.data.suggested
+                txvResponse.text = success.geoCodeInUserView.data.suggested + " - " + success.geoCodeInUserView.data.lat + ", " + success.geoCodeInUserView.data.lon
             }
         })
     }
