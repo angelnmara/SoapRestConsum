@@ -149,6 +149,7 @@ class GeoCodeFragment : Fragment(), View.OnClickListener {
         etColonia.setText("")
         etCalle.setText("")
         etGuia.setText("")
+        txvResponse.setText("")
     }
 
     private fun ejecutaBuscar(){
