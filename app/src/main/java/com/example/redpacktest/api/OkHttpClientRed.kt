@@ -7,7 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import okhttp3.*
-import okhttp3.OkHttpClient
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import org.xml.sax.InputSource
 import java.io.IOException
 import java.io.StringReader
@@ -25,7 +25,7 @@ class OkHttpClientRed {
     public suspend fun httpPrueba(codigo:Int): Resource<List<String>> {
         client = OkHttpClient().newBuilder()
             .build()
-        val mediaType = MediaType.parse("application/xml")
+        val mediaType = "application/xml".toMediaTypeOrNull()
         val body = RequestBody.create(
             mediaType,
             "\n\n\t\n\t\t<busquedaCodigoPostal xmlns=\"http://ws.redpack.com\">\n\t\t\t<PIN>QA BpjVbgxpoCIbhP1a+kRsPhb238k7zlAI</PIN>\n\t\t\t<idUsuario>297</idUsuario>\n\t\t\t<guias>\n\t\t\t\t<ns1:flag xmlns:ns1=\"http://vo.redpack.com/xsd\">0</ns1:flag>\n\t\t\t\t<ns2:remitente xmlns:ns2=\"http://vo.redpack.com/xsd\">\n\t\t\t\t\t<ns2:codigoPostal>" + codigo.toString() +  "</ns2:codigoPostal>\n\t\t\t\t</ns2:remitente>\n\t\t\t</guias>\n\t\t</busquedaCodigoPostal>\n\t\n    "
@@ -55,7 +55,7 @@ class OkHttpClientRed {
                     }
 
                     override fun onResponse(call: Call, response: Response) {
-                        val body = response.body()?.string().toString()
+                        val body = response.body?.string().toString()
                         var listString = llenalista(body)
                         continuation.resume(Resource.Success(listString))
                     }

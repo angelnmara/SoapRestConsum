@@ -12,4 +12,16 @@
     <string name="error_codigo_postal">No se pudo obtener la información del codigo postal</string>
     <string name="ninguna_coincidencia">No se encontro ninguna coincidencia</string>
 
+    <!--geocode-->
+    <string name="guia">Guia</string>
+    <string name="consignatario">Consignatario</string>
+    <string name="calle">Calle</string>
+    <string name="colonia">Colonia</string>
+    <string name="municipio">Municipio</string>
+    <string name="estado">Estado</string>
+    <string name="postal">Postal</string>
+    <string name="extra">Extra</string>
+
+    <!--genericos-->
+    <string name="buscar">Buscar</string>
 </resources>

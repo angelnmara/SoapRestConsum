@@ -36,14 +36,6 @@ class TragoViewModel(private val repo:Repo):ViewModel() {
     }
 
     fun getTragos(tragoName:String){
-        //httpPrueba()
-        /*viewModelScope.launch {
-            val result = repo.getColoniasByCodigo(57000)
-            if(result is Resource.Success){
-                Log.d(TAG, "getTragos: ok")
-            }
-        }*/
-
         viewModelScope.launch {
             val result = repo.getTrago(tragoName)
             if(result is Resource.Success){

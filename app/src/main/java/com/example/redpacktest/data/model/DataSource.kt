@@ -1,27 +1,17 @@
 package com.example.redpacktest.data.model
 
-import android.util.Log
-import androidx.lifecycle.viewModelScope
 import com.example.redpacktest.api.OkHttpClientRed
 import com.example.redpacktest.api.RetrofitClient
 import com.example.redpacktest.tools.Resource
-import kotlinx.coroutines.*
-import okhttp3.*
-import org.xml.sax.InputSource
-import java.io.IOException
-import java.io.StringReader
-import javax.xml.parsers.DocumentBuilderFactory
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
-import kotlin.math.log
+import okhttp3.RequestBody
 
 class DataSource {
-    suspend fun getGeoCode():Resource<List<GeoCode>>{
-        return Resource.Success(RetrofitClient.webservice.getGeocode())
+    suspend fun getGeoCode(geoCodeRequest: GeoCodeRequest):Resource<GeoCode>{
+        val cadena = "{\"guia\": \"\", \"consignatario\": \"\", \"calle\": \"claveria\", \"colonia\": \"\", \"municipio\": \"nextlalpan\", \"estado\": \"\", \"postal\":\"\",\"extra\": \"\"}"
+        return Resource.Success(RetrofitClient.webserviceGeo.getGeocode(cadena))
     }
     suspend fun getTrago(tragoName:String):Resource<List<Drink>>{
-        return Resource.Success(RetrofitClient.webservice.getTragoByName(tragoName).drinkList)
+        return Resource.Success(RetrofitClient.webserviceDrinks.getTragoByName(tragoName).drinkList)
     }
     suspend fun getColoniasByCodigo(codigo:Int):Resource<List<String>>{
         val okHttpClientRed = OkHttpClientRed()

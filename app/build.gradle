@@ -63,4 +63,14 @@ dependencies {
     // beust
     implementation 'com.beust:klaxon:5.5'
 
+    // Gson (To convert raw JSON to pretty JSON)
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    // define a BOM and its version
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.0"))
+
+    // define any required OkHttp artifacts without version
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+
 }
