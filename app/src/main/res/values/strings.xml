@@ -11,6 +11,7 @@
     <string name="error_tragos">No se pudo obtener la información en tragos</string>
     <string name="error_codigo_postal">No se pudo obtener la información del codigo postal</string>
     <string name="ninguna_coincidencia">No se encontro ninguna coincidencia</string>
+    <string name="error_geocode">No se pudo obtener la información del geocode</string>
 
     <!--geocode-->
     <string name="guia">Guia</string>
@@ -24,4 +25,5 @@
 
     <!--genericos-->
     <string name="buscar">Buscar</string>
+    <string name="limpiar">Limpiar</string>
 </resources>

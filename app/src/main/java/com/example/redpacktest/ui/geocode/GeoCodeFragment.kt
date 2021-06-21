@@ -1,6 +1,7 @@
 package com.example.redpacktest.ui.geocode
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,8 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 
 import com.example.redpacktest.R
 import com.example.redpacktest.api.RepoImpl
@@ -19,6 +23,8 @@ import com.example.redpacktest.data.model.DataSource
 import com.example.redpacktest.data.model.GeoCodeRequest
 import com.example.redpacktest.tools.VMFactory
 import com.example.redpacktest.ui.geocode.placeholder.PlaceholderContent
+import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -32,6 +38,7 @@ class GeoCodeFragment : Fragment(), View.OnClickListener {
     private var columnCount = 1
     private val TAG = javaClass.name
     private lateinit var btnBuscar:Button
+    private lateinit var btnLimpiar:Button
     private lateinit var etGuia: EditText
     private lateinit var etConsignatario:EditText
     private lateinit var etCalle:EditText
@@ -40,6 +47,7 @@ class GeoCodeFragment : Fragment(), View.OnClickListener {
     private lateinit var etEstado:EditText
     private lateinit var etPostal:EditText
     private lateinit var etExtra:EditText
+    private lateinit var txvResponse:TextView
     private val viewModel by viewModels<GeoCodeViewModel>{
         VMFactory(RepoImpl(DataSource()))
     }
@@ -60,6 +68,8 @@ class GeoCodeFragment : Fragment(), View.OnClickListener {
         val rvGeoCode = view.findViewById<RecyclerView>(R.id.listGeoCode)
         btnBuscar = view.findViewById(R.id.btnBuscar)
         btnBuscar.setOnClickListener(this)
+        btnLimpiar = view.findViewById(R.id.btnLimpiar)
+        btnLimpiar.setOnClickListener(this)
         configTexboxes(view)
         // Set the adapter
         if (rvGeoCode is RecyclerView) {
@@ -83,6 +93,22 @@ class GeoCodeFragment : Fragment(), View.OnClickListener {
         etExtra = view.findViewById(R.id.etExtra)
         etMunicipio = view.findViewById(R.id.etMunicipio)
         etPostal = view.findViewById(R.id.etPostal)
+        txvResponse = view.findViewById(R.id.txvResponse)
+        viewModel.geoCodeResult.observe(viewLifecycleOwner, Observer {
+            geoCodeResult->
+            geoCodeResult?:return@Observer
+            geoCodeResult.error?.let {
+                error->
+                Log.d(TAG, "configTexboxes: " + error)
+                Snackbar.make(view, getString(error), Snackbar.LENGTH_SHORT).show()
+                txvResponse.text = ""
+            }
+            geoCodeResult.success?.let {
+                success->
+                Log.d(TAG, "configTexboxes: " + success.geoCodeInUserView.data)
+                txvResponse.text = success.geoCodeInUserView.data.suggested
+            }
+        })
     }
 
     companion object {
@@ -101,6 +127,31 @@ class GeoCodeFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.btnBuscar->{
+                ejecutaBuscar()
+            }
+            R.id.btnLimpiar->{
+                ejecutaLimpiar()
+            }
+            else->{
+                Toast.makeText(requireContext(), "Opcion invalida", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun ejecutaLimpiar() {
+        etPostal.setText("")
+        etMunicipio.setText("")
+        etEstado.setText("")
+        etExtra.setText("")
+        etConsignatario.setText("")
+        etColonia.setText("")
+        etCalle.setText("")
+        etGuia.setText("")
+    }
+
+    private fun ejecutaBuscar(){
         val geoCodeRequest = GeoCodeRequest(
             guia = etGuia.text.toString(),
             consignatario = etConsignatario.text.toString(),
@@ -112,14 +163,9 @@ class GeoCodeFragment : Fragment(), View.OnClickListener {
             extra = etExtra.text.toString()
         )
 
-        val jsonObject = JSONObject()
-        jsonObject.put("calle", "Sierra dorada")
-        jsonObject.put("municipio", "coacalco")
+        val gson = Gson()
+        val jso = gson.toJson(geoCodeRequest)
 
-        val jsonObjectString = jsonObject.toString()
-
-        val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
-
-        viewModel.BuscaGeoCode(geoCodeRequest)
+        viewModel.BuscaGeoCode(jso)
     }
 }

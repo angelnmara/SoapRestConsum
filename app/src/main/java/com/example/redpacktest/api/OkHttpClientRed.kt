@@ -15,6 +15,13 @@ import javax.xml.parsers.DocumentBuilderFactory
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+import okhttp3.RequestBody
+
+import okhttp3.MediaType
+
+import okhttp3.OkHttpClient
+import org.json.JSONObject
+
 
 class OkHttpClientRed {
 
@@ -78,5 +85,43 @@ class OkHttpClientRed {
             }
         }
         return listString
+    }
+
+    public suspend fun geocodeResponse(geoCodeRequest: String): String{
+        client = OkHttpClient().newBuilder()
+            .build()
+        val mediaType = "application/json".toMediaTypeOrNull()
+        val body = RequestBody.create(
+            mediaType,
+            geoCodeRequest
+        )
+        request = Request.Builder()
+            .url("https://geoloc.redpack.com.mx/geocode")
+            .method("POST", body)
+            .addHeader("Content-Type", "application/json")
+            .build()
+        return responseString().getCompleted()
+    }
+    private suspend fun responseString(): Deferred<String> = withContext(
+        Dispatchers.IO) {
+        async {
+            suspendCoroutine<String> {
+                    continuation ->
+                client.newCall(request).enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        Log.d(TAG, "onFailure: " + e.toString())
+                        continuation.resumeWithException(e)
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        val body = response.body?.string().toString()
+                        val bodyJsonOK = body.replace("\"{", "{").replace("\\", """""").replace("}\"", "}")
+                        //val jsoBody = JSONObject(bodyJsonOK)
+                        //var listString = llenalista(body)
+                        continuation.resume(bodyJsonOK)
+                    }
+                })
+            }
+        }
     }
 }
